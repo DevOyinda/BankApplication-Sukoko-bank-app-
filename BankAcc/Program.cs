@@ -189,7 +189,7 @@ public class UserManagerClass
         //Save account number into file.
         //Create a account balance tracker file e.g $"{9878654328}ab.txt"
         //and you gift the person 1000 naira.
-        Console.WriteLine("Account Created Successfully.\n========================\n AccNum");
+        Console.WriteLine("Account Created Successfully.\n========================\n" + AccNum);
         Console.WriteLine("\n========================\n ");
         BankAppMenuScreen();
     }
@@ -235,7 +235,7 @@ public class UserManagerClass
     {
         Console.WriteLine("Hey" + FirstName + ", WELCOME!!!");
         Console.WriteLine(AccNum);
-        Console.WriteLine("Account Balance: " + current);
+        Console.WriteLine("Account Balance: " + amount);
 
         while (true)
         {
@@ -254,7 +254,7 @@ public class UserManagerClass
             else if (selection == 3)
             {
                 Console.WriteLine("\n============================================\n");
-                HomeScreen();
+                AtmMenuScreen();
             }
             else if (selection == 4)
             {
