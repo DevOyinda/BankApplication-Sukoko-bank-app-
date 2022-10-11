@@ -117,7 +117,7 @@ public class UserManagerClass
     {
         while (true)
         {
-            Console.WriteLine("Welcome to Oyin's Bank\nWhat would you like to do?\nPress 1 to CreateAccount" +
+            Console.WriteLine("\n====================\nWelcome to Oyin's Bank\nWhat would you like to do?\nPress 1 to CreateAccount" +
             "\nPress 2 to Login\nPress 3 to go back to the Main Menu\nPress 4 to close application.");
             selection = Convert.ToInt32(Console.ReadLine());
             if (selection == 1)
@@ -233,7 +233,7 @@ public class UserManagerClass
 
     public static void AtmMenuScreen()
     {
-        Console.WriteLine("Hey" + FirstName + ", WELCOME!!!");
+        Console.WriteLine("Hey " + FirstName + ", WELCOME!!!");
         Console.WriteLine(AccNum);
         Console.WriteLine("Account Balance: " + amount);
 
@@ -275,33 +275,39 @@ public class UserManagerClass
         Console.WriteLine("Enter the amount to be deposited");
         deposit = Convert.ToInt32(Console.ReadLine());
         current = amount + deposit;
-        amount = current;
+        
 
-        //var currentAsAString = Convert.ToString(current);
-        //var amountAsAString = Convert.ToString(amount);
+        var currentAsAString = Convert.ToString(current);
+        var amountAsAString = Convert.ToString(amount);
+
         //string text = File.ReadAllText($"{folderName}{AccNum}.txt");
         //text = text.Replace(amountAsAString, currentAsAString);
         //File.WriteAllText($"{folderName}{AccNum}.txt", text);
 
         //var filePath = $"{folderName}3151275815";
-        //string[] filecheck = File.ReadAllLines($"{filePath}.txt");
-        //foreach (var item in filecheck)
-        //{
-        //    if (item == Convert.ToString(amount))
-        //    {
-        //        item.Replace(amountAsAString, currentAsAString);
-        //    }
-        //}
-        //foreach (var item in filecheck)
-        //{
-        //    Console.WriteLine(item);
-        //}
         string[] filecheck = File.ReadAllLines($"{folderName}{AccNum}.txt");
-        using (StreamWriter sw = File.AppendText($"{folderName}{AccNum}.txt"))
-
+        foreach (var item in filecheck)
         {
-            sw.WriteLine($"{folderName}{AccNum}.txt", amount);
+            if (item == amountAsAString)
+            {
+                item.Replace(amountAsAString, currentAsAString);
+            }
         }
+        foreach (var item in filecheck)
+        {
+            using (StreamWriter sw = File.AppendText($"{folderName}{AccNum}.txt"))
+
+            {
+                sw.WriteLine(item);
+            }
+           
+        }
+        //string[] filecheck = File.ReadAllLines($"{folderName}{AccNum}.txt");
+        //using (StreamWriter sw = File.AppendText($"{folderName}{AccNum}.txt"))
+
+        //{
+        //    sw.WriteLine($"{folderName}{AccNum}.txt", amount);
+        //}
 
         Console.WriteLine("The current balance in the account is " + current);
     }
@@ -316,6 +322,7 @@ public class UserManagerClass
             {
                 Console.WriteLine("Please collect your cash " + withdraw);
                 current = amount - withdraw;
+                //amount = current;
                 Console.WriteLine("The current balance is now " + current);
             }
             else
