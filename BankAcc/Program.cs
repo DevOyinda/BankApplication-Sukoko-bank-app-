@@ -15,9 +15,7 @@ public class UserManagerClass
     public static string AccNum;
     public static string AccountBalance;
     public static int Pin;
-    public static int amount = 1000;
-    public static int deposit;
-    public static int current;
+    public static int deposit; 
     public static int withdraw;
     public static string FilePath = @"C:\Users\oyins\Desktop\Oyinda\FilesFolder\";
     public static string folderName = @"C:\Users\oyins\Desktop\Oyinda\BankDetails\";
@@ -86,13 +84,6 @@ public class UserManagerClass
 
         if (File.Exists($"{FilePath}{Email}.txt"))
         {
-            /*var accountnumber = "";
-
-            var accountDetails = $"{FilePath}{accountnumber}.txt";
-
-            var accountBalanceFile = $"{FilePath}{accountnumber}1.txt";*/
-
-
             string[] checkfile = File.ReadAllLines($"{FilePath}{Email}.txt");
 
             if (Password == checkfile[2])
@@ -179,16 +170,17 @@ public class UserManagerClass
                 sw.WriteLine(LastName);
                 sw.WriteLine(AccNum);
                 sw.WriteLine(Pin);
-                sw.WriteLine(amount);
             }
-            //File.Create($"{FilePath}{AccNum}ab.txt"); Create another file for account tracker
+            using (StreamWriter accountBalanceFile = File.CreateText($"{folderName}{AccNum}ab.txt"))
+            {
+                accountBalanceFile.WriteLine(1000);
+            }
+            using (var bankStatementFile = File.Create($"{folderName}{AccNum}bs.txt"))
+            {
+                
+            }
         }
 
-        //Generating a 10 digit account number.
-        //Use the account number generated to create a file e.g (9878654328.txt)
-        //Save account number into file.
-        //Create a account balance tracker file e.g $"{9878654328}ab.txt"
-        //and you gift the person 1000 naira.
         Console.WriteLine("Account Created Successfully.\n========================\n" + AccNum);
         Console.WriteLine("\n========================\n ");
         BankAppMenuScreen();
@@ -235,12 +227,14 @@ public class UserManagerClass
     {
         Console.WriteLine("Hey " + FirstName + ", WELCOME!!!");
         Console.WriteLine(AccNum);
-        Console.WriteLine("Account Balance: " + amount);
+
+        var Balance = File.ReadAllText($"{folderName}{AccNum}ab.txt");
+        Console.WriteLine("Account Balance: " + Balance);
 
         while (true)
         {
             Console.WriteLine("What would you like to do?\nPress 1 to Deposit" +
-            "\nPress 2 to Withdraw\nPress 3 to go to home screen\nPress 4 to close application.");
+            "\nPress 2 to Withdraw\nPress 3 to go to home screen\nPress 4 to print bank statement\n Press 5 to close application.");
             Console.Write("Enter your Choice: ");
             selection = Convert.ToInt32(Console.ReadLine());
             if (selection == 1)
@@ -258,6 +252,10 @@ public class UserManagerClass
             }
             else if (selection == 4)
             {
+                PrintBankStatement();
+            }
+            else if (selection == 5)
+            {
                 Console.WriteLine("You are logging out.\nThank you for using our application");
                 Thread.Sleep(3000);
                 System.Environment.Exit(0);
@@ -273,63 +271,67 @@ public class UserManagerClass
     public static void Deposit()
     {
         Console.WriteLine("Enter the amount to be deposited");
+
+        var Balance = File.ReadAllText($"{folderName}{AccNum}ab.txt");
+        var accountBalance = Convert.ToInt32(Balance);
         deposit = Convert.ToInt32(Console.ReadLine());
-        current = amount + deposit;
-        
+        var currentBalance = accountBalance + deposit;
 
-        var currentAsAString = Convert.ToString(current);
-        var amountAsAString = Convert.ToString(amount);
-
-        //string text = File.ReadAllText($"{folderName}{AccNum}.txt");
-        //text = text.Replace(amountAsAString, currentAsAString);
-        //File.WriteAllText($"{folderName}{AccNum}.txt", text);
-
-        //var filePath = $"{folderName}3151275815";
-        string[] filecheck = File.ReadAllLines($"{folderName}{AccNum}.txt");
-        foreach (var item in filecheck)
+        using (StreamWriter accountBalanceFile = File.CreateText($"{folderName}{AccNum}ab.txt"))
         {
-            if (item == amountAsAString)
-            {
-                item.Replace(amountAsAString, currentAsAString);
-            }
+            accountBalanceFile.WriteLine(currentBalance);
         }
-        foreach (var item in filecheck)
+
+        using (StreamWriter bankStatementFile = File.AppendText($"{folderName}{AccNum}bs.txt"))
         {
-            using (StreamWriter sw = File.AppendText($"{folderName}{AccNum}.txt"))
+            bankStatementFile.WriteLine("Credited- " + deposit);
+            bankStatementFile.WriteLine("Current Balance is " + currentBalance);
 
-            {
-                sw.WriteLine(item);
-            }
-           
         }
-        //string[] filecheck = File.ReadAllLines($"{folderName}{AccNum}.txt");
-        //using (StreamWriter sw = File.AppendText($"{folderName}{AccNum}.txt"))
 
-        //{
-        //    sw.WriteLine($"{folderName}{AccNum}.txt", amount);
-        //}
-
-        Console.WriteLine("The current balance in the account is " + current);
+        Console.WriteLine("The current balance in the account is " + currentBalance);
     }
 
     public static void Withdrawal()
     {
         Console.WriteLine("Enter the amount to withdraw");
+
+        var Balance = File.ReadAllText($"{folderName}{AccNum}ab.txt");
+        var accountBalance = Convert.ToInt32(Balance);
         withdraw = Convert.ToInt32(Console.ReadLine());
-        if (amount > withdraw)
+    
+        
+        if (accountBalance > withdraw)
         {
             if (withdraw % 10 == 0)
             {
+                var currentBalance = accountBalance - withdraw;
                 Console.WriteLine("Please collect your cash " + withdraw);
-                current = amount - withdraw;
-                //amount = current;
-                Console.WriteLine("The current balance is now " + current);
+                
+                Console.WriteLine("The current balance is now " + currentBalance);
+
+                using (StreamWriter accountBalanceFile = File.CreateText($"{folderName}{AccNum}ab.txt"))
+                {
+                    accountBalanceFile.WriteLine(currentBalance);
+                }
+
+                using (StreamWriter bankStatementFile = File.AppendText($"{folderName}{AccNum}bs.txt"))
+                {
+                    bankStatementFile.WriteLine("Debited - " + withdraw);
+                    bankStatementFile.WriteLine("Current Balance is " + currentBalance);
+                }
             }
             else
                 Console.WriteLine("Please enter the amount in multiples of 10");
         }
         else
             Console.WriteLine("Your account doesn't have sufficient balance");
+    }
+
+    public static void PrintBankStatement()
+    {
+        var printFile = File.ReadAllText($"{folderName}{AccNum}bs.txt");
+        Console.WriteLine(printFile);
     }
 }
 
