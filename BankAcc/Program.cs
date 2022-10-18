@@ -5,7 +5,8 @@ namespace BankAcc
     {
         static void Main()
         {
-            UserManagerClass.HomeScreen();
+            UserManagerClass umc = new UserManagerClass();
+            umc.HomeScreen();
         }
     }
 }

@@ -8,21 +8,21 @@ namespace BankAcc
 {
     public class UserManagerClass
     {
-        public static string Email;
-        public static string FullName;
-        public static string Password;
-        public static string FirstName;
-        public static string LastName;
-        public static int selection;
-        public static string AccNum;
-        public static string AccountBalance;
-        public static int Pin;
-        public static int deposit;
-        public static int withdraw;
-        public static string FilePath = @"C:\Users\oyins\Desktop\Oyinda\FilesFolder\";
-        public static string folderName = @"C:\Users\oyins\Desktop\Oyinda\BankDetails\";
+        public string Email;
+        public string FullName;
+        public string Password;
+        public string FirstName;
+        public string LastName;
+        public int selection;
+        public string AccNum;
+        public string AccountBalance;
+        public int Pin;
+        public int deposit;
+        public int withdraw;
+        public string FilePath = @"C:\Users\oyins\Desktop\Oyinda\FilesFolder\";
+        public string folderName = @"C:\Users\oyins\Desktop\Oyinda\BankDetails\";
 
-        public static void HomeScreen()
+        public void HomeScreen()
         {
             Console.WriteLine("Welcome to Sukoko App\nPlease Select a valid Option:\nPress 1 for Registration\nPress 2 for Login\nPress 3 to close the application.");
             selection = Convert.ToInt32(Console.ReadLine());
@@ -46,7 +46,7 @@ namespace BankAcc
             }
         }
 
-        public static void UserRegister()
+        private void UserRegister()
         {
             Console.WriteLine("Please fill in your details.");
 
@@ -75,7 +75,7 @@ namespace BankAcc
             }
         }
 
-        public static void UserLogin()
+        private void UserLogin()
         {
             Console.WriteLine("Welcome to the Login Screen.\nPlease provide your login details.");
 
@@ -106,7 +106,7 @@ namespace BankAcc
             }
         }
 
-        public static void BankAppMenuScreen()
+        private void BankAppMenuScreen()
         {
             while (true)
             {
@@ -139,7 +139,7 @@ namespace BankAcc
             }
         }
 
-        public static void CreateAccount()
+        private void CreateAccount()
         {
             Console.WriteLine("Please create an account with us.");
 
@@ -179,7 +179,7 @@ namespace BankAcc
                 }
                 using (var bankStatementFile = File.Create($"{folderName}{AccNum}bs.txt"))
                 {
-
+                    
                 }
             }
 
@@ -188,7 +188,7 @@ namespace BankAcc
             BankAppMenuScreen();
         }
 
-        public static void AccountLogin()
+        private void AccountLogin()
         {
             Console.WriteLine("Please login to your account.");
 
@@ -225,7 +225,7 @@ namespace BankAcc
             }
         }
 
-        public static void AtmMenuScreen()
+        private void AtmMenuScreen()
         {
             Console.WriteLine("Hey " + FirstName + ", WELCOME!!!");
             Console.WriteLine(AccNum);
@@ -271,7 +271,7 @@ namespace BankAcc
             }
         }
 
-        public static void Deposit()
+        private void Deposit()
         {
             Console.WriteLine("Enter the amount to be deposited");
 
@@ -295,7 +295,7 @@ namespace BankAcc
             Console.WriteLine("The current balance in the account is " + currentBalance);
         }
 
-        public static void Withdrawal()
+        private void Withdrawal()
         {
             Console.WriteLine("Enter the amount to withdraw");
 
@@ -331,7 +331,7 @@ namespace BankAcc
                 Console.WriteLine("Your account doesn't have sufficient balance");
         }
 
-        public static void PrintBankStatement()
+        private void PrintBankStatement()
         {
             var printFile = File.ReadAllText($"{folderName}{AccNum}bs.txt");
             Console.WriteLine(printFile);
